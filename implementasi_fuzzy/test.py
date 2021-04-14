@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-print('=====Seleksi Sekolah Santa Maria======')
-aa = input('masukan list data  (.csv) = ')
+print('=====Seleksi Magang======')
+aa = input('masukan list data mhsw (.csv) = ')
 
 #read data csv
 def read_data():
@@ -24,15 +24,15 @@ def save_to_file(array_data):
 #kompetensi
 def kompetensi_rendah(x):
     if x <= 35: return  1
-    elif 35 < x < 70 : return float((70-x)/(70-35))
+    elif 35 < x < 60 : return float((60-x)/(60-35))
     else: return 0
 def kompetensi_sedang(x):
-    if 45 < x <= 75 : return float((x-45)/(75-45))
-    elif 75 < x < 85 : return float((85-x)/(85-75))
+    if 45 < x <= 65 : return float((x-45)/(65-45))
+    elif 65 < x < 85 : return float((85-x)/(85-65))
     else : return 0
 def kompetensi_tinggi(x):
-    if x <= 75 : return 0
-    elif 75 < x < 85 : return float((x-75)/(85-75))
+    if x <= 65 : return 0
+    elif 65 < x < 85 : return float((x-65)/(85-65))
     else : return 1
 
 #Kepribadian
@@ -41,12 +41,12 @@ def kepribadian_rendah(x):
     elif 35 < x < 60: return float((60 - x) / (60 - 35))
     else: return 0
 def kepribadian_sedang(x):
-    if 45 < x <= 60: return float((x - 45) / (60 - 45))
-    elif 60 < x < 85: return float((85 - x) / (85 - 60))
+    if 45 < x <= 50: return float((x - 45) / (50 - 45))
+    elif 50 < x < 85: return float((85 - x) / (85 - 50))
     else: return 0
 def kepribadian_tinggi(x) :
-    if x <= 75:return 0
-    elif 75 < x < 85: return float((x - 75) / (85 - 75))
+    if x <= 65:return 0
+    elif 65 < x < 85: return float((x - 65) / (85 - 65))
     else: return 1
 
 def fuzzification_kompetensi(data):
@@ -59,7 +59,7 @@ def fuzzification_kompetensi(data):
         komp_tinggi = kompetensi_tinggi(data_kompetensi[x])
         metriks_kompetensi = [komp_rendah, komp_sedang, komp_tinggi]
         fuzzy_kompetensi.append(metriks_kompetensi)
-        print('NIM','Urutan',x+1, metriks_kompetensi)
+        print('NRP','1520170',x+1, metriks_kompetensi)
     return fuzzy_kompetensi
 
 def fuzzification_kepribadian(data):
@@ -72,7 +72,7 @@ def fuzzification_kepribadian(data):
         kep_tinggi = kepribadian_tinggi(data_kepribadian[x])
         metriks_kepribadian = [kep_rendah,kep_sedang,kep_tinggi]
         fuzzy_kepribadian.append(metriks_kepribadian)
-        print('NIM','Urutan',x+1, metriks_kepribadian)
+        print('NRP','1520170',x+1, metriks_kepribadian)
     return fuzzy_kepribadian
 
 #Inferensi
@@ -98,13 +98,13 @@ def inference(kompetensi,kepribadian):
         kelayakan_rejected = np.max(rejected)
         metriks_kelayakan = [kelayakan_rejected,kelayakan_accepted]
         kelayakan.append(metriks_kelayakan)
-        print('NIM','Urutan',x + 1, metriks_kelayakan)
+        print('NRP','1520170',x + 1, metriks_kelayakan)
 
     return kelayakan
 
 def mamdani(kelayakan):
     for x in range(1,100, 1):
-        if x < 71 :
+        if x < 66 :
             low = [np.sum(x*kelayakan[0]), np.sum(kelayakan[0])]
         else:
             high = [np.sum(x * kelayakan[1]), np.sum(kelayakan[1])]
@@ -150,9 +150,9 @@ def main():
     print('\n==============================================')
     for x in range(len(kelayakan)):
         crisp = mamdani(kelayakan[x])
-        print('NIM','Urutan',x+1,'=',crisp)
+        print('NRP','1520170',x+1,'=',crisp)
         
-        if crisp <= 70 :
+        if crisp <= 65 :
             data[x][-1] = "Tidak"
         else :
             data[x][-1] = "Ya"
@@ -163,7 +163,7 @@ def main():
     data_real = read_data()
     data_prediction  = read_data_prediction()
     rate = calculate_accuracy(data_real,data_prediction)
-    print(rate,'%','Anda Lulus.. selamat!!')
+    print(rate,'%','diterima.. semangat!!')
 
     #Show graph plot
     plot_competency_graph()
